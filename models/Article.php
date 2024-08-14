@@ -63,24 +63,47 @@ class Article extends \yii\db\ActiveRecord
             'category_id' => 'Category ID',
         ];
     }
-
+    
+    public function saveImage($filename) {
+        $this->image = $filename;
+        return $this->save(false);
+    }
+    
+    public function getImage() {
+        return ($this->image) ? '/uploads/' . $this->image : '/no-image.jpg';
+    }
+    
+    public function deleteImage() {
+        $imageUploadModel = new ImageUpload();
+        $imageUploadModel->deleteCurrentImage($this->image);
+    }
+    
+    public function beforeDelete() {
+        $this->deleteImage();
+        return parent::beforeDelete();
+    }
+    
     /**
      * Gets query for [[ArticleTags]].
      *
      * @return \yii\db\ActiveQuery
      */
+    /*
     public function getArticleTags()
     {
         return $this->hasMany(ArticleTag::class, ['article_id' => 'id']);
     }
+    */
 
     /**
      * Gets query for [[Comments]].
      *
      * @return \yii\db\ActiveQuery
      */
+    /*
     public function getComments()
     {
         return $this->hasMany(Comment::class, ['article_id' => 'id']);
     }
+    */
 }
