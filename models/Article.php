@@ -164,10 +164,19 @@ class Article extends \yii\db\ActiveRecord
         return $this->getComments()->where(['status' => 1])->all();
     }
     
+    public function getAuthor() {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+    
     public function saveArticle() {
         $this->user_id = Yii::$app->user->id;
         
         return $this->save();
+    }
+    
+    public function viewedCounter() {
+        $this->viewed += 1;
+        return $this->save(false);
     }
     
     /**

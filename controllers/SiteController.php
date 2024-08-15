@@ -65,7 +65,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $data = Article::getAll(1);
+        $data = Article::getAll();
         $popular = Article::getPopular();
         $recent = Article::getRecent();
         $categories = Category::getAll();
@@ -115,6 +115,8 @@ class SiteController extends Controller
         $categories = Category::getAll();
         $comments = $article->getArticleComments();
         $commentForm = new CommentForm();
+        
+        $article->viewedCounter();
         
         return $this->render('single', [
             'article' => $article,
