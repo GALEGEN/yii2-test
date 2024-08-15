@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\controllers;
 
+use Yii;
 use app\models\Article;
 use app\models\ArticleSearch;
 use yii\web\Controller;
@@ -75,7 +76,7 @@ class ArticleController extends Controller
         $model = new Article();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            if ($model->load($this->request->post()) && $model->saveArticle()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -98,13 +99,14 @@ class ArticleController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->saveArticle()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
@@ -141,7 +143,7 @@ class ArticleController extends Controller
     {
         $model = new ImageUpload;
         
-        if(\Yii::$app->request->isPost)
+        if(Yii::$app->request->isPost)
         {
             $article = $this->findModel($id);
             $file = UploadedFile::getInstance($model, 'image');
@@ -159,8 +161,8 @@ class ArticleController extends Controller
         $selectedCategory = ($article->category) ? $article->category->id : '0';
         $categories = ArrayHelper::map(Category::find()->all(), 'id', 'title');
         
-        if(\Yii::$app->request->isPost) {
-            $category = \Yii::$app->request->post('category');
+        if(Yii::$app->request->isPost) {
+            $category = Yii::$app->request->post('category');
             
             if($article->saveCategory($category)) {
                 return $this->redirect(['view', 'id' => $article->id]);
@@ -179,9 +181,9 @@ class ArticleController extends Controller
         $selectedTags = $article->getSelectedTags(); //
         $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'title');
 
-        if(\Yii::$app->request->isPost)
+        if(Yii::$app->request->isPost)
         {
-            $tags = \Yii::$app->request->post('tags');
+            $tags = Yii::$app->request->post('tags');
             $article->saveTags($tags);
             return $this->redirect(['view', 'id'=>$article->id]);
         }
