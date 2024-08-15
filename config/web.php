@@ -16,16 +16,20 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'kTSdot8NnQwKa-Xa_e2Y6S7B5oX33EJY',
         ],
+        /*
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+         */
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['auth/login'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        /*
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
             'viewPath' => '@app/mail',
@@ -41,6 +45,7 @@ $config = [
                 ],
             ],
         ],
+        */
         'db' => $db,
         'urlManager' => [
             'enablePrettyUrl' => true,
