@@ -4,6 +4,7 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use app\models\User;
+use app\models\LoginForm;
 
 class AuthController extends Controller
 {
@@ -24,7 +25,7 @@ class AuthController extends Controller
         }
 
         $model->password = '';
-        return $this->render('login', [
+        return $this->render('/site/login', [
             'model' => $model,
         ]);
     }
