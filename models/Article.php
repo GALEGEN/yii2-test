@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\data\Pagination;
+use app\models\Comment;
 
 /**
  * This is the model class for table "article".
@@ -130,7 +131,7 @@ class Article extends \yii\db\ActiveRecord
     }
     
     public function getDate() {
-        return \Yii::$app->formatter->asDate($this->date);
+        return Yii::$app->formatter->asDate($this->date);
     }
     
     public static function getAll($pageSize = 5) {
@@ -153,6 +154,14 @@ class Article extends \yii\db\ActiveRecord
     
     public static function getRecent() {
         return Article::find()->orderBy('date asc')->limit(4)->all();
+    }
+    
+    public function getComments() {
+        return $this->hasMany(Comment::class, ['article_id'=>'id']);
+    }
+    
+    public function getArticleComments() {
+        return $this->getComments()->where(['status' => 1])->all();
     }
     
     public function saveArticle() {

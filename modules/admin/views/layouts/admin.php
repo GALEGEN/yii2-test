@@ -41,6 +41,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'items' => [
             ['label' => 'Home', 'url' => ['/admin/default/index']],
             ['label' => 'Articles', 'url' => ['/admin/article/index']],
+            ['label' => 'Commentaries', 'url' => ['/admin/comment/index']],
             ['label' => 'Categories', 'url' => ['/admin/category/index']],
             ['label' => 'Tags', 'url' => ['/admin/tag/index']]
             /*
@@ -81,6 +82,14 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 </footer>
 
 <?php $this->endBody() ?>
+<?php $this->registerJsFile('/ckeditor/ckeditor.js');?>
+<?php $this->registerJsFile('/ckfinder/ckfinder.js');?>
+<script>
+    $(document).ready(function(){
+        var editor = CKEDITOR.replaceAll();
+        CKFinder.setupCKEditor( editor );
+    })
+</script>
 </body>
 </html>
 <?php $this->endPage() ?>
