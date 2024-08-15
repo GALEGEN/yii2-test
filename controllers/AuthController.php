@@ -5,6 +5,7 @@ use Yii;
 use yii\web\Controller;
 use app\models\User;
 use app\models\LoginForm;
+use \app\models\SignupForm;
 
 class AuthController extends Controller
 {
@@ -23,9 +24,7 @@ class AuthController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
-
-        $model->password = '';
-        return $this->render('/site/login', [
+        return $this->render('login', [
             'model' => $model,
         ]);
     }
@@ -42,16 +41,16 @@ class AuthController extends Controller
         return $this->goHome();
     }
     
-    public function actionTest() {
-        $user = User::findOne(1);
+    public function actionSignup() {
+        $model = new SignupForm();
         
-        Yii::$app->user->logout($user);
+        if(Yii::$app->request->isPost) {
+            $model->load(Yii::$app->request->post());
+            If($model->signup()) {
+                return $this->redirect(['auth/login']);
+            }
+        }
         
-        if(Yii::$app->user->isGuest) {
-            echo 'User is guest';
-        }
-        else {
-            echo 'User is sugned up';
-        }
+        return $this->render('signup', ['model' => $model]);
     }
 }
